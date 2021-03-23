@@ -23,13 +23,12 @@ async function start () {
   /* smell code >>> */
   /* СОЗДАЕМ ЗАКАЗ */
   const ordersValuesString = users
-    .map(u => {
-      const userOrders = [...new Array(_.random(1, 5, false))];
-      userOrders.forEach((_, index, arr) => {
-        arr[index] = `(${u.id})`;
-      });
-      return userOrders.join(',');
-    })
+    .map(u =>
+      new Array(_.random(1, 5, false))
+        .fill(null)
+        .map(() => `(${u.id})`)
+        .join(',')
+    )
     .join(',');
 
   const { rows: orders } = await client.query(`
@@ -41,22 +40,18 @@ async function start () {
   /* НАПОЛНЯЕМ ЗАКАЗ ТЕЛЕФОНАМИ */
   const phonesToOrdersValuesString = orders
     .map(o => {
-      const arr = [...new Array(_.random(1, phones.length))];
+      const arr = new Array(_.random(1, phones.length)).fill(null).map(
+        () => phones[_.random(1, phones.length - 1)]
+      );
 
-      arr.forEach((i, index, arr) => {
-        arr[index] = phones[_.random(1, phones.length - 1)];
-      });
-
-      const phonesToBuy = [...new Set(arr)];
-
-      return phonesToBuy
-        .map(p => `(${o.id}, ${p.id}, ${_.random(1, 10)})`)
+      return [...new Set(arr)]
+        .map(p => `(${o.id}, ${p.id}, ${_.random(1, 4)})`)
         .join(',');
     })
     .join(',');
 
   await client.query(`
-  INSERT INTO phones_to_orders ("orderId", "phoneId", "quantity")\n
+  INSERT INTO phones_to_orders ("orderId", "phoneId", "quantity")
   VALUES ${phonesToOrdersValuesString};
 `);
 

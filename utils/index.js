@@ -25,8 +25,8 @@ const PHONES_BRANDS = [
 const generatePhone = key => ({
   brand: PHONES_BRANDS[_.random(0, PHONES_BRANDS.length - 1, false)],
   model: `${key} model ${_.random(0, 100, false)}`,
-  price: _.random(500, 30000, false),
-  quantity: _.random(100, 25000, false)
+  price: _.random(1500, 40000, false),
+  quantity: _.random(100, 2500, false)
 });
 
 module.exports.generatePhones = (length = 50) =>
