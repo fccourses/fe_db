@@ -30,7 +30,7 @@ CREATE TABLE phones(
   model varchar(40) NOT NULL,
   price decimal(10, 2) NOT NULL CHECK(price >= 0),
   quantity int NOT NULL CHECK(quantity >= 0) DEFAULT 0,
-  description text,
+  "description" text,
   "createdAt" timestamp NOT NULL DEFAULT current_timestamp,
   CONSTRAINT "unique_phone" UNIQUE (brand, model)
 );

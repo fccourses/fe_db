@@ -2,8 +2,8 @@ class Phone {
   static _client;
   static _tableName = 'phones';
 
-  static async bulkCreate (values) {
-    const valuesString = values
+  static async bulkCreate (phones) {
+    const valuesString = phones
       .map(
         ({ brand, model, price, quantity = 1 }) =>
           `('${brand}','${model}', ${price}, ${quantity})`
