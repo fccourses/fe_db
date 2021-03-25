@@ -74,26 +74,37 @@ WHERE orders_with_cost.cost > (
       ) AS "orders_with_cost"
   )
   /* REFACTOR << */
-WITH orders_with_cost AS (
-  SELECT pto."orderId",
-    sum(pto.quantity * p.price) as cost
-  FROM phones_to_orders pto
-    JOIN phones p ON p.id = pto."phoneId"
-  GROUP BY pto."orderId"
-) SELECT *
+  WITH orders_with_cost AS (
+    SELECT pto."orderId",
+      sum(pto.quantity * p.price) as cost
+    FROM phones_to_orders pto
+      JOIN phones p ON p.id = pto."phoneId"
+    GROUP BY pto."orderId"
+  )
+SELECT *
 FROM orders_with_cost AS owc
 WHERE owc.cost > (
     SELECT avg(owc.cost)
     FROM orders_with_cost owc
   );
 /* Извлечь всех пользователей 
-у которых вол-во заказов больше среднего 
-
-  1. Колво заказов каждого пользователя
-   и вся инфа о пользователе
-  2. Среднее кол-во заказов
-  3. Объединить всё вместе и выполнить задание 
-  (WHERE orderAmount > avgOrderAmount)
-  ----------------------------------------------------------------
-  TASKS table(attr, domain, constraints, associations)
+ у которых вол-во заказов больше среднего 
+ 
+ 1. Колво заказов каждого пользователя
+ и вся инфа о пользователе
+ 2. Среднее кол-во заказов
+ 3. Объединить всё вместе и выполнить задание 
+ (WHERE orderAmount > avgOrderAmount)
+ ----------------------------------------------------------------
+ TASKS table(attr, domain, constraints, associations)
+ 
  */
+CREATE TABLE tasks (
+  id serial PRIMARY KEY,
+  userId int REFERENCES "users"(id),
+  task VARCHAR(512) not null,
+  isDone BOOLEAN
+);
+
+INSERT INTO tasks (userId, task, isDone)
+VALUES(5,'sdfds',true);
